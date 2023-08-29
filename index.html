@@ -4,7 +4,10 @@
   <title>PDF Viewer</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
   <style>
- .loader {
+    /* Your existing styles here */
+
+    /* Loader styles */
+    .loader {
       position: fixed;
       top: 0;
       left: 0;
@@ -31,55 +34,16 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
-    }
-    #header {
-      background-color: #3498db;
-      color: white;
-      text-align: center;
-      padding: 20px 0;
-      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-    }
-    #pdfViewer {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-    .pdf-page-container {
-      margin: 10px;
-      border: 1px solid #ccc;
-      box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .pdf-page {
-      flex: 1;
-    }
-    .page-number {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #666;
-    }
-  a{
-  font-size: 30px;
-  align-items: center;
-  border-style: groove;
-  text-decoration:none;
-  }
   </style>
 </head>
 <body>
+  <!-- Loader -->
   <div id="loader" class="loader">
+    <div class="loader-spinner"></div>
     <div class="loader-text">Loading...</div>
     <div class="loader-progress" id="loader-progress">0%</div>
   </div>
+
   <div id="header">
     <h1>OS Syllabus</h1>
   </div>
@@ -91,9 +55,10 @@
     </div>
   </center>
   <script>
- const pdfUrl = "Os Syllabus.pdf";
+    const pdfUrl = "Os Syllabus.pdf";
 
     const loader = document.getElementById('loader');
+    const loaderProgress = document.getElementById('loader-progress');
     const loadingTask = pdfjsLib.getDocument(pdfUrl);
 
     loadingTask.promise.then(pdf => {
@@ -104,6 +69,10 @@
       const updateLoader = () => {
         const progress = Math.floor((loadedPages / numPages) * 100);
         loaderProgress.textContent = `${progress}%`;
+
+        if (progress === 100) {
+          loader.style.display = 'none'; // Hide the loader when all pages are loaded
+        }
       };
 
       for (let pageNum = 1; pageNum <= numPages; pageNum++) {
@@ -135,10 +104,6 @@
           pageNumberDiv.className = 'page-number';
           pageNumberDiv.textContent = `Page ${pageNum} of ${numPages}`;
           pageContainer.appendChild(pageNumberDiv);
-
-          if (loadedPages === numPages) {
-            loader.style.display = 'none'; // Hide the loader when all pages are loaded
-          }
         });
       }
     }).catch(error => {
@@ -146,7 +111,6 @@
       alert("Failed to load PDF. Please try again later.");
       loader.style.display = 'none'; // Hide the loader on error
     });
-
   </script>
 </body>
 </html>
