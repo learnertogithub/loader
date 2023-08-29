@@ -4,9 +4,7 @@
   <title>PDF Viewer</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
   <style>
-    /* Your existing styles here */
-
-    .loader {
+ .loader {
       position: fixed;
       top: 0;
       left: 0;
@@ -20,14 +18,18 @@
       z-index: 9999;
     }
 
-    .loader-text {
-      font-size: 20px;
-      margin-bottom: 10px;
+    .loader-spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 2s linear infinite;
     }
 
-    .loader-progress {
-      font-size: 16px;
-      color: #3498db;
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     body {
       margin: 0;
@@ -89,13 +91,9 @@
     </div>
   </center>
   <script>
-    const pdfUrl = "Os Syllabus.pdf";
+ const pdfUrl = "Os Syllabus.pdf";
 
     const loader = document.getElementById('loader');
-    const loaderProgress = document.getElementById('loader-progress');
-
-    loader.style.display = 'block';
-
     const loadingTask = pdfjsLib.getDocument(pdfUrl);
 
     loadingTask.promise.then(pdf => {
@@ -148,6 +146,7 @@
       alert("Failed to load PDF. Please try again later.");
       loader.style.display = 'none'; // Hide the loader on error
     });
+
   </script>
 </body>
 </html>
